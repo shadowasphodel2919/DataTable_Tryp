@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, Tag, Button } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, Tag, Button, InputGroup, InputLeftElement, Input } from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons'
 
 type DataTableProps = {
   headers: string[];
@@ -19,6 +20,7 @@ const DataTable: React.FC<DataTableProps> = ({ headers, rows, caption }) => {
   const [sortName, setSortName] = useState<boolean>(false);
   const [data, setData] = useState<RowData[]>([])
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const itemsPerPage = 5; 
 
   useEffect(() => {
@@ -31,6 +33,19 @@ const DataTable: React.FC<DataTableProps> = ({ headers, rows, caption }) => {
   useEffect(() => {
     setData(rows)
   }, [])
+  useEffect(() => {
+    const filteredRows = rows.filter((row) => {
+      return (
+        row.timestamp.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        row.purchaseId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        row.mail.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        row.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        row.source.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        row.status.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    });
+    setData(filteredRows);
+  }, [rows, searchQuery]);
   
 
   const handleHeaderClick = (column: string, index: number) => {
@@ -169,6 +184,16 @@ const DataTable: React.FC<DataTableProps> = ({ headers, rows, caption }) => {
   const currentPageData = data.slice(startIndex, endIndex);
 
   return (
+    <div>
+      <InputGroup>
+        <InputLeftElement pointerEvents='none'>
+          <SearchIcon color='gray.300' />
+        </InputLeftElement>
+        <Input type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder='Search' size='lg' />
+      </InputGroup>
     <Table variant="simple">
       {caption && <caption>{caption}</caption>}
       <Thead>
@@ -229,6 +254,7 @@ const DataTable: React.FC<DataTableProps> = ({ headers, rows, caption }) => {
         </Tr>
       </Tfoot>
     </Table>
+    </div>
   );
 };
 
