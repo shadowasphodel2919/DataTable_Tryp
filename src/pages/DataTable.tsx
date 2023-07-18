@@ -235,7 +235,7 @@ const DataTable: React.FC<DataTableProps> = ({ headers, rows, caption }) => {
       {/* Pagination section */}
       <Tfoot>
         <Tr>
-          <Td colSpan={headers.length}>
+          <Td colSpan={headers?.length}>
             <Button
               colorScheme="teal"
               disabled={currentPage === 1}
