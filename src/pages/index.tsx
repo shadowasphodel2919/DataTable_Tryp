@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import DataTable from './DataTable'
 const inter = Inter({ subsets: ['latin'] })
+import { useEffect, useState } from 'react'
 
 type RowData = {
   timestamp: string;
@@ -16,68 +17,23 @@ type RowData = {
 
 export default function Home() {
   const headers = ['Timestamp', 'Purchase Id', 'Mail', 'Name', 'Source', 'Status', 'Select'];
-  const rows: RowData[] = [
-    {
-      timestamp: '2023-07-15 10:30:00',
-      purchaseId: '123456',
-      mail: 'john@example.com',
-      name: 'John Doe',
-      source: 'Website',
-      status: 'success',
-    },
-    {
-      timestamp: '2023-07-14 15:45:00',
-      purchaseId: '789012',
-      mail: 'jane@example.com',
-      name: 'Jane Smith',
-      source: 'App',
-      status: 'waiting',
-    },
-    {
-      timestamp: '2023-07-13 09:15:00',
-      purchaseId: '345678',
-      mail: 'alex@example.com',
-      name: 'Alex Johnson',
-      source: 'Website',
-      status: 'failed',
-    },
-    {
-      timestamp: '2023-07-12 12:00:00',
-      purchaseId: '987654',
-      mail: 'mike@example.com',
-      name: 'Mike Anderson',
-      source: 'App',
-      status: 'success',
-    },
-    {
-      timestamp: '2023-07-11 17:30:00',
-      purchaseId: '654321',
-      mail: 'emma@example.com',
-      name: 'Emma Wilson',
-      source: 'Website',
-      status: 'waiting',
-    },
-    {
-      timestamp: '2023-06-20 09:45:00',
-      purchaseId: '543210',
-      mail: 'alexander@example.com',
-      name: 'Alexander Johnson',
-      source: 'App',
-      status: 'success',
-    },
-    {
-      timestamp: '2023-06-19 14:20:00',
-      purchaseId: '678905',
-      mail: 'lisa@example.com',
-      name: 'Lisa Smith',
-      source: 'Website',
-      status: 'failed',
-    },
-  ];
+  const [jsonData, setJsonData] = useState<RowData[]>([])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/data');
+        const data = await response.json();
+        setJsonData(data as RowData[]);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
+    fetchData();
+  }, []);
   return (
     <>
-    <DataTable headers={headers} rows={rows} caption="Bookings"/>
+    <DataTable headers={headers} rows={jsonData} caption="Bookings"/>
     </>
   )
 }
