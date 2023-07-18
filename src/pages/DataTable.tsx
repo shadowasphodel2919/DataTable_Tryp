@@ -202,7 +202,7 @@ const DataTable: React.FC<DataTableProps> = ({ headers, rows, caption }) => {
     <Table variant="striped">
       <Thead>
         <Tr>
-          {headers.map((header, index) => (
+          {headers.map((header: string, index: number) => (
             <Th key={index} onClick={() => handleHeaderClick(header, index)} cursor="pointer">
               {header}
             </Th>
