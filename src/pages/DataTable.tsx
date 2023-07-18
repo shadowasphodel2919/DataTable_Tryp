@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, Tag, Button, InputGroup, InputLeftElement, Input } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, Tag, Button, InputGroup, InputLeftElement, Input, Heading } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons'
 
 type DataTableProps = {
@@ -178,6 +178,10 @@ const DataTable: React.FC<DataTableProps> = ({ headers, rows, caption }) => {
     });
   };
 
+  const onSubmit = (row: RowData): any =>{
+    alert(`${row.name} selected`)
+  }
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
@@ -194,8 +198,8 @@ const DataTable: React.FC<DataTableProps> = ({ headers, rows, caption }) => {
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder='Search' size='lg' />
       </InputGroup>
-    <Table variant="simple">
-      {caption && <caption>{caption}</caption>}
+      {caption && <Heading as='h3' size='lg'>{caption}</Heading>}
+    <Table variant="striped">
       <Thead>
         <Tr>
           {headers.map((header, index) => (
@@ -224,7 +228,7 @@ const DataTable: React.FC<DataTableProps> = ({ headers, rows, caption }) => {
               <Tag colorScheme="orange">Waiting</Tag>
             )}
           </Td>
-          <Td><Button colorScheme='green'>Select</Button></Td>
+          <Td><Button colorScheme='green' onClick={() => onSubmit(row)}>Select</Button></Td>
         </Tr>
       ))}
       </Tbody>
