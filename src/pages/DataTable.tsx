@@ -202,7 +202,7 @@ const DataTable: React.FC<DataTableProps> = ({ headers, rows, caption }) => {
     <Table variant="striped">
       <Thead>
         <Tr>
-          {headers.map((header: string, index: number) => (
+          {headers?.map((header: string, index: number) => (
             <Th key={index} onClick={() => handleHeaderClick(header, index)} cursor="pointer">
               {header}
             </Th>
@@ -210,7 +210,7 @@ const DataTable: React.FC<DataTableProps> = ({ headers, rows, caption }) => {
         </Tr>
       </Thead>
       <Tbody>
-      {currentPageData.map((row: RowData, index: number) => (
+      {currentPageData?.map((row: RowData, index: number) => (
           <Tr key={index}>
             <Td>{getTimeAgo(row.timestamp)}</Td>
           <Td>{row.purchaseId}</Td>
